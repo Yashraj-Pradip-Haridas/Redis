@@ -32,6 +32,10 @@ pub fn handle_commands(
             if command.len() < 3 || command[1].trim().is_empty() || command[2].trim().is_empty() {
                 return Err("Key/Value not found".into());
             }
+            if command[2].len() > 50 {
+                stream.write_all("Please enter smaller value\n".as_bytes())?;
+                return Err("Input out of size".into());
+            }
             set_key_value_pair(command[1], command[2]);
             stream.write_all(String::from("OK\n").as_bytes())?;
             write_to_file("data.txt".to_string(), str_command)?;
